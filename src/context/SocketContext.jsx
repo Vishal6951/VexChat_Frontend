@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
 } from 'react';
+import { useAuth } from './AuthContext.jsx';
 
 /**
  * SocketContext — provides a singleton WebSocket connection and a stable
@@ -35,11 +36,22 @@ export function SocketProvider({ children }) {
    * connect — opens the WebSocket.  Safe to call multiple times:
    * if already open/connecting this is a no-op.
    */
+  const { accessToken } = useAuth();
+
+  /**
+   * connect — opens the WebSocket with the current JWT as a query param.
+   * Safe to call multiple times: if already open/connecting this is a no-op.
+   */
   const connect = useCallback(() => {
     if (wsRef.current && wsRef.current.readyState <= WebSocket.OPEN) return;
 
+    // Browser WebSocket API cannot set custom headers, so we pass the JWT
+    // as a ?token= query parameter instead. The backend RequireAuth middleware
+    // reads it from the query string for WebSocket upgrade requests.
+    const url = accessToken ? `${WS_URL}?token=${encodeURIComponent(accessToken)}` : WS_URL;
+
     setStatus('connecting');
-    const ws = new WebSocket(WS_URL);
+    const ws = new WebSocket(url);
     wsRef.current = ws;
 
     ws.onopen = () => setStatus('open');
@@ -47,10 +59,8 @@ export function SocketProvider({ children }) {
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data);
-        // Notify all listeners registered for this message type.
         const handlers = listenersRef.current.get(msg.type);
         if (handlers) handlers.forEach((fn) => fn(msg));
-        // Wildcard listeners get every message.
         const wildcards = listenersRef.current.get('*');
         if (wildcards) wildcards.forEach((fn) => fn(msg));
       } catch {
@@ -64,7 +74,7 @@ export function SocketProvider({ children }) {
       setStatus('closed');
       wsRef.current = null;
     };
-  }, []);
+  }, [accessToken]);
 
   /** disconnect — gracefully closes the WebSocket. */
   const disconnect = useCallback(() => {
