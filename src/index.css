@@ -13,6 +13,9 @@ html,
 body,
 #root {
   height: 100%;
+  /* Use dvh (dynamic viewport height) so the mobile browser chrome
+     (address bar) is excluded — prevents content being cut off. */
+  min-height: 100dvh;
   margin: 0;
   padding: 0;
   background-color: #0a0a0a;
@@ -20,6 +23,24 @@ body,
   font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent body scroll bounce on iOS */
+  overscroll-behavior: none;
+}
+
+/* Remove blue tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection on interactive elements for cleaner mobile UX */
+button, [role="button"] {
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* Safe area insets for iPhones with notch / home bar */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* ── Scrollbar styling ───────────────────────────────────────────────────── */

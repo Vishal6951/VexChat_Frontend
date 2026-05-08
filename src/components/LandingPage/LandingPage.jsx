@@ -88,12 +88,13 @@ export default function LandingPage() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-600/5 rounded-full blur-3xl pointer-events-none z-0" />
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="relative z-10 flex items-center justify-between px-8 py-6">
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-8 py-4 sm:py-6">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-purple-600 shadow-[0_0_10px_rgba(124,58,237,0.8)]" />
           <span className="font-bold text-gray-200 tracking-tight">VexChat</span>
         </div>
-        <nav className="flex gap-6 text-sm text-gray-500">
+        {/* Nav hidden on mobile to prevent overflow */}
+        <nav className="hidden sm:flex gap-6 text-sm text-gray-500">
           <a href="#about" className="hover:text-gray-300 transition-colors">About</a>
           <a href="#report" className="hover:text-gray-300 transition-colors">Report</a>
           <a href="#terms" className="hover:text-gray-300 transition-colors">Terms</a>
@@ -111,8 +112,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-7xl sm:text-8xl font-bold tracking-tighter mb-4 purple-glow-text animate-glow">
+        {/* Title — scales from 5xl on xs to 8xl on lg */}
+        <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 purple-glow-text animate-glow">
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-purple-300 via-purple-400 to-purple-600">
             VexChat
           </span>
@@ -124,11 +125,11 @@ export default function LandingPage() {
           <span className="text-gray-400">Disappear after.</span>
         </p>
 
-        {/* CTA */}
+        {/* CTA — full width on xs, auto on sm+ */}
         <button
           onClick={() => navigate('/chat')}
           className="
-            group relative px-10 py-4 rounded-2xl text-base font-semibold
+            group relative w-full sm:w-auto px-10 py-4 rounded-2xl text-base font-semibold
             bg-purple-600 text-white
             hover:bg-purple-500 transition-all duration-300
             shadow-[0_0_30px_rgba(124,58,237,0.4)]

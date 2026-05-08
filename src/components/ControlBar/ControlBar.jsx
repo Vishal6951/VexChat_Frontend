@@ -24,7 +24,7 @@ export default function ControlBar({
   disabled,
 }) {
   return (
-    <div className="flex items-center justify-center gap-3 p-4 glass rounded-2xl">
+    <div className="flex items-center justify-center flex-wrap gap-2 sm:gap-3 p-3 sm:p-4 glass rounded-2xl">
       {/* Mute */}
       <ControlButton
         onClick={onToggleMute}

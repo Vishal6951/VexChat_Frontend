@@ -61,7 +61,7 @@ export default function VideoPanel({
         )}
 
         {/* ── Local video PiP ─────────────────────────────────────────── */}
-        <div className="absolute bottom-4 right-4 w-36 h-24 sm:w-44 sm:h-28 rounded-xl overflow-hidden border border-purple-600/30 shadow-[0_0_20px_rgba(124,58,237,0.3)] z-10">
+        <div className="absolute bottom-3 right-3 w-24 h-16 sm:w-36 sm:h-24 md:w-44 md:h-28 rounded-xl overflow-hidden border border-purple-600/30 shadow-[0_0_20px_rgba(124,58,237,0.3)] z-10">
           {localStream && !isCameraOff ? (
             <video
               ref={localRef}
